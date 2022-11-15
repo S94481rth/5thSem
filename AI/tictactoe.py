@@ -1,5 +1,7 @@
-board = {1: ' ',2: ' ',3: ' ',4: ' ',5: ' ',6: ' ',7: ' ',8: ' ',9: ' '}
+import random
 
+board = {1: ' ',2: ' ',3: ' ',4: ' ',5: ' ',6: ' ',7: ' ',8: ' ',9: ' '}
+#list = [1,2,3,4]
 def printBoard():
     print(board[1]+ "  |  " + board[2] + "  |  " + board[3])
     print("\n")
@@ -8,7 +10,7 @@ def printBoard():
     print(board[7]+ "  |  " + board[8] + "  |  " + board[9])
     print("\n")
     return
-printBoard()
+
 
 
 user = 'O'
@@ -51,30 +53,36 @@ def userTurn(player):
         userTurn(player)
     
     
-    
+def compTurn(player):
+    compMove = random.randint(1,9)
+    if(board[compMove] != ' '):
+        compTurn (player)
+    else:
+        board[compMove] = player    
+    return 
 
 
 def mainish():
     for i in range(9):
+        
         if i%2 == 0:
-            userTurn('X')
+            compTurn('X')
+            printBoard()
             if checkWin('X'):
                 printBoard()
-                print("your ex won!!!!")
+                print("Computer won!!!!")
                 return
-                 
+                
         else :
             userTurn('O')
+           
             if checkWin('O'):
                 printBoard()
-                print("yOu won!!!!")
+                print("you won!!!!")
                 return
-                 
-        printBoard()
+                
+        
     if checkDraw():
-        print("Congratulations!! we both can suck")
+        print("Draw")
     return
-mainish()    
-
-
-            
+mainish()
