@@ -56,7 +56,7 @@ def userTurn(player):
 def compTurn(player):
     compMove = random.randint(1,9)
     if(board[compMove] != ' '):
-        compTurn (player)
+        compTurn(player)
     else:
         board[compMove] = player    
     return 
