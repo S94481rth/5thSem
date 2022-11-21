@@ -1,103 +1,107 @@
-
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+using namespace std;
 #include <cinttypes>
 
-using namespace std;
-
-
-class Node {
-	public : int data;
-
-	Node* xnode;
+class Node{
+    public:
+    int data;
+    Node *npx;
 };
-
-
-Node* Xor(Node* x, Node* y)
+Node *Xor(Node *a, Node*b)
 {
-	return reinterpret_cast<Node*>(
-		reinterpret_cast<uintptr_t>(x)
-		^ reinterpret_cast<uintptr_t>(y));
+    return reinterpret_cast<Node*>(reinterpret_cast<uintptr_t>(a) ^ reinterpret_cast<uintptr_t>(b));
 }
-
-
-void insert(Node** head_ref, int data)
+void insert_from_beginning(Node**head_ref,int val)
 {
-    Node* new_node = new Node();
-	new_node -> data = data;
+    Node *new_node= new Node();
+    new_node->data= val;
+    new_node->npx=*head_ref;
+    if(*head_ref!=NULL)
+    {
+        (*head_ref)->npx= Xor(new_node,(*head_ref)->npx);
+    }
 
-	
-	new_node -> xnode = *head_ref;
-
-	
-	if (*head_ref != NULL) {
-		
-		(*head_ref)
-			-> xnode = Xor(new_node, (*head_ref) -> xnode);
-	}
-
-	*head_ref = new_node;
+    *head_ref=new_node;
 }
-
-void deleteSpecific(int data,Node* head){
-    
-}
-
-void Traverse(Node* head)
+void traverse(Node *temp)
 {
-	Node* curr = head;
-	Node* prev = NULL;
-	Node* next;
-
-	cout << "The nodes of Linked List are: \n";
-
-	
-	while (curr != NULL) {
-
-		cout << curr -> data << " ";
-
-		
-		next = Xor(prev, curr -> xnode);
-
-		prev = curr;
-		curr = next;
-	}
-	cout<<"\n";
+    Node *curr=temp;
+    Node *prev=NULL;
+    Node *next;
+    while (curr!=NULL)
+    {
+        cout<<curr->data<<" ";
+        next=Xor(curr->npx,prev);
+        prev=curr;
+        curr=next;
+    }
 }
-
-void TraverseReverse(Node* head)
+void del(Node **head)
 {
-	Node* curr = head;
-	Node* next = NULL;
-	Node* prev;
+    if (*head == NULL) cout << "List is empty";
+    else
+    {
+       Node* curr = *head;
+       Node* prev = NULL;
+       Node* next;
+        while (Xor(curr->npx, prev) != NULL)
+        {
+            next = Xor(prev, curr->npx);
+            prev = curr;
+            curr = next;
+        }
+        if (prev != NULL) {
+            prev->npx = Xor(prev->npx, curr);
+        }
 
-	cout << "The nodes of Linked List in reverse are: \n";
+        else {
+            *head = NULL;
+        }
+        delete(curr);
+    }
 
-	
-	while (curr != NULL) {
-
-		cout << curr -> data << " ";
-
-		
-		prev = Xor(next, curr -> xnode);
-
-		next = curr;
-		curr = prev;
-	}
-	cout<<"\n";
 }
+void del-at_specific(Node **head,int val)
+{
+    if (*head == NULL) cout << "List is empty";
+    else
+    {
+       Node* curr = *head;
+       Node* prev = NULL;
+       Node* next;
+        while (curr->data !=val)
+        {
+            next = Xor(prev, curr->npx);
+            prev = curr;
+            curr = next;
+        }
+        if (prev == NULL) {
+            *head = NULL;
+        }
+        if(Xor(curr->npx, prev) == NULL)
+        {
+            prev->npx = Xor(prev->npx, curr);
+        }
+        else {
+                 prev->npx = Xor(Xor(prev->npx, curr),Xor(curr->npx,prev)) ;
 
+        }
+        delete(curr);
+    }
+
+}
 int main()
 {
-	Node* head = NULL;
-	Node* tail;
-	insert(&head, 10);
-	tail = head;
-	insert(&head, 100);
-	insert(&head, 1000);
-	insert(&head, 10000);
+    Node * head =nullptr ;
+    cout<<"Before Deletion :";
+    insert_from_beginning(&head,5);
+    insert_from_beginning(&head,7);
+    insert_from_beginning(&head,3);
+    insert_from_beginning(&head,10);
+    traverse(head);
+    cout<<"\nAfter Deletion :";
+    del(&head);
+    traverse(head);
 
-
- 	Traverse(head);
-    TraverseReverse(tail);
-	return (0);
+    return 0;
 }
