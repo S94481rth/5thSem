@@ -51,15 +51,50 @@ def userTurn(player):
     else:
         print("ReEnter : ")
         userTurn(player)
-    
+
+
+def minmax(depth,isMaximising):
+    if(checkWin(computer)):
+        return 1
+    if(checkWin(user)):
+        return -1
+    if(checkDraw):
+        return 0
+    if(isMaximising):
+        bestScore = -10000
+        for i in range(1,10):
+            if(board[i] == ' '):
+                board[i] = computer
+                score = minmax(depth+1,False)
+                board[i] = ' '
+                bestScore = max(score,bestScore)
+        return bestScore
+    else:
+        bestScore = 10000
+        for i in range(1,10):
+            if(board[i] == ' '):
+                board[i] = user
+                score = minmax(depth+1,True)
+                board[i] = ' '
+                bestScore = min(score,bestScore)
+        return bestScore                  
+
+
     
 def compTurn(player):
-    compMove = random.randint(1,9)
-    if(board[compMove] != ' '):
-        compTurn(player)
-    else:
-        board[compMove] = player    
+    bestScore = -10000
+    for i in range(1,10):
+        if(board[i] == ' '):
+            board[i] = computer
+            score = minmax(0,False)
+            board[i] = ' '
+            if(score > bestScore):
+                bestScore = score
+                move = i
+    board[move] = computer
     return 
+
+
 
 
 def mainish():
