@@ -78,3 +78,24 @@ int main()
 				"within max depth";
 	return 0;
 }
+
+//output ::
+
+// Enter numebr of vertices : 7
+// Enter numeber of edges : 6 
+// Edge 1 : 0 1
+// Edge 2 : 0 2
+// Edge 3 : 1 3
+// Edge 4 :  1 4
+// Edge 5 : 1 5
+// Edge 6 : 2 6
+// Enter source and destination : 0 6
+// Target is reachable from source within max depth
+
+
+
+
+
+
+
+
